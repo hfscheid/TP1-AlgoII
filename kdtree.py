@@ -26,8 +26,9 @@ class Node:
         return self.parent
 
 class Leaf:
-    def __init__(self, coordinates):
-        self.coordinates = coordinates
+    def __init__(self, data_tuple):
+        self.coordinates = data_tuple[:-1]
+        self.tag = data_tuple[-1]
 
     def type(self):
         return 'Leaf'
@@ -85,10 +86,25 @@ class KDtree:
         next_nodes = []
         for node in nodes:
             if node.type() is 'Node':
-                print(f'({node.comparator})', end=' ')
+                print(f'[{node.comparator}]', end=' ')
                 next_nodes.append(node.get_left())
                 next_nodes.append(node.get_right())
             elif node.type() is 'Leaf':
-                print(f'[{node.coordinates}]', end=' ')
+                print(f'{node.coordinates}', end=' ')
         print('\n')
         self.print_level(level+1, next_nodes)
+
+    def lookup(self, point):
+        return self.__lookup(point, self.root, 0)
+
+    def __lookup(self, point, root, dimension):
+        if root.type() == 'Leaf':
+            return root
+        elif point[dimension] <= root.comparator:
+            return self.__lookup(point, root.get_left(), (dimension+1)%self.dimensions)
+        else:
+            return self.__lookup(point, root.get_right(), (dimension+1)%self.dimensions)
+
+    def leaves(self, node):
+        # return all leaves branching from this node
+        pass
