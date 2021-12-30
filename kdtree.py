@@ -1,6 +1,14 @@
-class Node:
-    def __init__(self, comparator):
-        self.comparator = comparator
+class BaseNode:
+    def __init__(self, parent, value):
+        self.parent = parent
+        self.value = value
+
+    def get_parent(self):
+        return self.parent
+
+class Node(BaseNode):
+    def __init__(self, parent, comparator):
+        super().__init__(parent, comparator)
         self.left = None
         self.right = None
 
@@ -19,16 +27,10 @@ class Node:
     def get_right(self):
         return self.right
 
-    def set_parent(self, node):
-        self.parent = node
-
-    def get_parent(self):
-        return self.parent
-
-class Leaf:
-    def __init__(self, data_tuple):
+class Leaf(BaseNode):
+    def __init__(self, parent, data_tuple):
+        super().__init__(parent, data_tuple[-1])
         self.coordinates = data_tuple[:-1]
-        self.tag = data_tuple[-1]
 
     def type(self):
         return 'Leaf'
@@ -45,19 +47,22 @@ class KDtree:
         self.root = self.buildtree(points, 0)
 
     def buildtree(self, point_range, dimension):
+        return self.__buildtree(point_range, dimension, None)
+
+    def __buildtree(self, point_range, dimension, parent):
         if len(point_range) == 0:
             return
 
         if len(point_range) == 2:
-            node = Node(point_range[0][dimension])
-            left = Leaf(point_range[0])
-            right = Leaf(point_range[1])
+            node = Node(parent, point_range[0][dimension])
+            left = Leaf(parent, point_range[0])
+            right = Leaf(parent, point_range[1])
             node.set_left(left)
             node.set_right(right)
             return node
 
         elif len(point_range) == 1:
-            return Leaf(point_range[0])
+            return Leaf(parent, point_range[0])
         else:
             point_range = sorted(point_range, key=lambda point: point[dimension])
             print(f'point range: {point_range}')
@@ -65,7 +70,7 @@ class KDtree:
             print(f'median index: {median_index}')
             next_dimension = (dimension+1) % self.dimensions
 
-            node = Node(point_range[median_index][dimension])
+            node = Node(parent, point_range[median_index][dimension])
             node.set_left(self.buildtree(point_range[:median_index+1],
                                          next_dimension))
             node.set_right(self.buildtree(point_range[median_index+1:],
@@ -86,7 +91,7 @@ class KDtree:
         next_nodes = []
         for node in nodes:
             if node.type() is 'Node':
-                print(f'[{node.comparator}]', end=' ')
+                print(f'[{node.value}]', end=' ')
                 next_nodes.append(node.get_left())
                 next_nodes.append(node.get_right())
             elif node.type() is 'Leaf':
@@ -100,11 +105,18 @@ class KDtree:
     def __lookup(self, point, root, dimension):
         if root.type() == 'Leaf':
             return root
-        elif point[dimension] <= root.comparator:
+        elif point[dimension] <= root.value:
             return self.__lookup(point, root.get_left(), (dimension+1)%self.dimensions)
         else:
             return self.__lookup(point, root.get_right(), (dimension+1)%self.dimensions)
 
     def leaves(self, node):
-        # return all leaves branching from this node
-        pass
+        if node == None:
+            return []
+
+        if node.type() == 'Leaf':
+            return [node]
+        leaves = []
+        leaves += leaves(node.get_left)
+        leaves += leaves(node.get_right)
+        return leaves
