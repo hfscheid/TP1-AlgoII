@@ -55,8 +55,8 @@ class KDtree:
 
         if len(point_range) == 2:
             node = Node(parent, point_range[0][dimension])
-            left = Leaf(parent, point_range[0])
-            right = Leaf(parent, point_range[1])
+            left = Leaf(node, point_range[0])
+            right = Leaf(node, point_range[1])
             node.set_left(left)
             node.set_right(right)
             return node
@@ -71,10 +71,10 @@ class KDtree:
             next_dimension = (dimension+1) % self.dimensions
 
             node = Node(parent, point_range[median_index][dimension])
-            node.set_left(self.buildtree(point_range[:median_index+1],
-                                         next_dimension))
-            node.set_right(self.buildtree(point_range[median_index+1:],
-                                          next_dimension)) 
+            node.set_left(self.__buildtree(point_range[:median_index+1],
+                                         next_dimension, node))
+            node.set_right(self.__buildtree(point_range[median_index+1:],
+                                          next_dimension, node)) 
             return node
 
     def median_index(self, point_range):
@@ -116,7 +116,7 @@ class KDtree:
 
         if node.type() == 'Leaf':
             return [node]
-        leaves = []
-        leaves += leaves(node.get_left)
-        leaves += leaves(node.get_right)
-        return leaves
+        ls = []
+        ls += self.leaves(node.get_left())
+        ls += self.leaves(node.get_right())
+        return ls
