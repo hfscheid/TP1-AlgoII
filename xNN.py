@@ -3,7 +3,7 @@ import kdtree
 
 class xNN:
     def __init__(self, x, train_set, test_set):
-        dimensions = len(train_set[0] -1)
+        dimensions = len(train_set[0])-1
         self.x = x
         self.tree = kdtree.KDtree(dimensions, train_set)
         self.test_set = test_set
@@ -19,35 +19,41 @@ class xNN:
         while True:
             # rewind to parent, check other children.
             parent = root.get_parent()
-            neighbours.add(parent.leaves())
+            if not parent:
+                break
+
+            neighbours = self.tree.leaves(parent)
             neighbours = self.distances(neighbours)
             neighbours = heapq.nsmallest(self.x, neighbours)
-            neighbours = heapq.heapify(neighbours)
+            heapq.heapify(neighbours)
 
             # update the neighbouring radius,
-            radius = heapq.nlargest(1, neighbours)[0]
+            print(f'neighbours: {neighbours}')
+            radius = heapq.nlargest(1, neighbours)[0][0]
 
             # set parent as root for next rewind and
             # compare it with the radius
             root = parent
-            dist_to_root = abs(root.comparator
-                    - point.coordinates[root.dimension])
+            dist_to_root = abs(root.value
+                    - point[root.dimension])
             if dist_to_root >= radius:
                 break
 
-    def distances(neighbours):
+        return neighbours
+
+    def distances(self, neighbours):
         # remove duplicates
-        neighbours = list(set(neighbours))
+#        neighbours = list(dict.fromkeys(neighbours))
 
         dist_neighbours = []
         for neighbour in neighbours:
-            dist_neighbours.append(self.dist(neighbour), neighbour)
+            dist_neighbours.append((self.dist(neighbour), neighbour))
 
         return dist_neighbours
 
-    def dist(neighbour):
+    def dist(self, neighbour):
         _a = 0
         for i in range(len(neighbour.coordinates)):
             _a += (neighbour.coordinates[i]
-                    - self.reference.coordinates[i]) ** 2
+                    - self.reference[i]) ** 2
         return _a ** 0.5

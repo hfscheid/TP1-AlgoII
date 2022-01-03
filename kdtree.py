@@ -66,9 +66,9 @@ class KDtree:
             return Leaf(parent, point_range[0])
         else:
             point_range = sorted(point_range, key=lambda point: point[dimension])
-            print(f'point range: {point_range}')
+#            print(f'point range: {point_range}')
             median_index = self.median_index(point_range)
-            print(f'median index: {median_index}')
+#            print(f'median index: {median_index}')
             next_dimension = (dimension+1) % self.dimensions
 
             node = Node(parent, point_range[median_index][dimension], dimension)
@@ -92,7 +92,7 @@ class KDtree:
         next_nodes = []
         for node in nodes:
             if node.type() is 'Node':
-                print(f'[{node.value}]', end=' ')
+                print(f'[{node.value},{node.dimension}]', end=' ')
                 next_nodes.append(node.get_left())
                 next_nodes.append(node.get_right())
             elif node.type() is 'Leaf':
