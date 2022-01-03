@@ -39,7 +39,7 @@ class xNN:
             if dist_to_root >= radius:
                 break
 
-        return neighbours
+        return self.majority_tag(neighbours)
 
     def distances(self, neighbours):
         # remove duplicates
@@ -57,3 +57,12 @@ class xNN:
             _a += (neighbour.coordinates[i]
                     - self.reference[i]) ** 2
         return _a ** 0.5
+
+    def majority_tag(neighbours):
+        neighbour_tags = dict()
+        for tag in self.tags:
+            neighbour_tags[tag] = 0
+        for n in neighbours:
+           neighbour_tags[neighbour.value] += 1
+
+
