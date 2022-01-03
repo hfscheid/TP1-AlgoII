@@ -7,10 +7,11 @@ class BaseNode:
         return self.parent
 
 class Node(BaseNode):
-    def __init__(self, parent, comparator):
+    def __init__(self, parent, comparator, dimension):
         super().__init__(parent, comparator)
         self.left = None
         self.right = None
+        self.dimension = dimension
 
     def type(self):
         return 'Node'
@@ -54,7 +55,7 @@ class KDtree:
             return
 
         if len(point_range) == 2:
-            node = Node(parent, point_range[0][dimension])
+            node = Node(parent, point_range[0][dimension], dimension)
             left = Leaf(node, point_range[0])
             right = Leaf(node, point_range[1])
             node.set_left(left)
@@ -70,7 +71,7 @@ class KDtree:
             print(f'median index: {median_index}')
             next_dimension = (dimension+1) % self.dimensions
 
-            node = Node(parent, point_range[median_index][dimension])
+            node = Node(parent, point_range[median_index][dimension], dimension)
             node.set_left(self.__buildtree(point_range[:median_index+1],
                                          next_dimension, node))
             node.set_right(self.__buildtree(point_range[median_index+1:],
