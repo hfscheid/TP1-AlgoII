@@ -1,4 +1,11 @@
 import kdtree
+class priority_queue:
+    def __init__(self, size):
+        self.size = size
+        self.queue = []
+
+    def push(node):
+
 
 class xNN:
     def __init__(self, x, train_set, test_set):
