@@ -1,13 +1,13 @@
+#!/usr/bin/env python3
+
 import sys
 from xNN import xNN
 
-def get_tags(string):
-    string = string[1:-1]
-    return string.split(',')
+def get_tags(s):
+    return [float(x) for x in s[1:-2].split(',')]
 
 def to_tuple(line):
-    arr = [float(x) for x in line.split(',')[:-1]]
-    arr.append(line.split(',')[-1])
+    arr = [float(x) for x in line.split(',')]
     return tuple(arr)
 
 def get_data(datafile):
@@ -17,22 +17,31 @@ def get_data(datafile):
     for line in data_lines:
         if line[0] == '@':
             words = line.split(' ')
-            if words[1] == 'Class':
-                tags = get_tags(words[2])
-            data_lines.remove(line)
+            try:
+                if words[1] == 'Class':
+                    tags = get_tags(words[2])
+            except:
+                pass
         else:
             data.append(to_tuple(line))
     return data, tags
 
 def main(num_neighbours, datafile):
-    data = get_data(datafile)
+    with open(datafile, 'r') as ifile:
+        data, tags = get_data(ifile)
+#    print(f'tags: {tags}')
 
     # split data into training set (70%)
     # and testing set (30%)
-    delimiter = len(data)*7/10
+    delimiter = len(data)*7//10
     xnn = xNN(num_neighbours,
+              tags,
               data[:delimiter],
               data[delimiter:])
 
+    with open('output.txt', 'w') as outfile:
+        xnn.classify(outfile)
+        outfile.close()
 
-main(sys.argv[0], sys.argv[1])
+
+main(sys.argv[1], sys.argv[2])

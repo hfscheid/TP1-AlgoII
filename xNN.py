@@ -2,9 +2,10 @@ import heapq
 import kdtree
 
 class xNN:
-    def __init__(self, x, train_set, test_set):
+    def __init__(self, x, tags, train_set, test_set):
         dimensions = len(train_set[0])-1
-        self.x = x
+        self.x = int(x)
+        self.tags = tags
         self.tree = kdtree.KDtree(dimensions, train_set)
         self.test_set = test_set
 
@@ -16,6 +17,9 @@ class xNN:
         root = self.tree.lookup(point)
         neighbours = [root]
         radius = 0
+
+        # extra variable to stabilize heapq sorting
+        counter = 0
         while True:
             # rewind to parent, check other children.
             parent = root.get_parent()
@@ -23,12 +27,12 @@ class xNN:
                 break
 
             neighbours = self.tree.leaves(parent)
-            neighbours = self.distances(neighbours)
+            neighbours, counter = self.distances(neighbours, counter)
+#            print(f'neighbours: {neighbours}')
             neighbours = heapq.nsmallest(self.x, neighbours)
             heapq.heapify(neighbours)
 
             # update the neighbouring radius,
-            print(f'neighbours: {neighbours}')
             radius = heapq.nlargest(1, neighbours)[0][0]
 
             # set parent as root for next rewind and
@@ -41,15 +45,16 @@ class xNN:
 
         return self.majority_tag(neighbours)
 
-    def distances(self, neighbours):
+    def distances(self, neighbours, counter):
         # remove duplicates
 #        neighbours = list(dict.fromkeys(neighbours))
 
         dist_neighbours = []
         for neighbour in neighbours:
-            dist_neighbours.append((self.dist(neighbour), neighbour))
+            dist_neighbours.append((self.dist(neighbour), counter, neighbour))
+            counter += 1
 
-        return dist_neighbours
+        return dist_neighbours, counter
 
     def dist(self, neighbour):
         _a = 0
@@ -58,11 +63,27 @@ class xNN:
                     - self.reference[i]) ** 2
         return _a ** 0.5
 
-    def majority_tag(neighbours):
-        neighbour_tags = dict()
+    def majority_tag(self, neighbours):
+        neighbour_tags = dict.fromkeys(self.tags)
         for tag in self.tags:
             neighbour_tags[tag] = 0
         for n in neighbours:
-           neighbour_tags[neighbour.value] += 1
+           neighbour_tags[n[2].value] += 1
 
+        # sort neighbour tags by occurence and
+        # pick the greatest one
+        neighbour_tags = {
+                k: v for k, v in sorted(neighbour_tags.items(),
+                                        key=lambda x: x[1],
+                                        reverse=True)
+        }
+        return list(neighbour_tags.keys())[0]
+
+    def classify(self, outfile):
+        # for all points in test set
+            # do nearest_neighbours
+            # print list with all these points and their tags (original vs computed)
+        for point in self.test_set:
+            result = self.nearest_neighbours(point)
+            outfile.write(str(point)+'\t\t'+str(result)+'\n')
 
