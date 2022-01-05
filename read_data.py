@@ -4,7 +4,7 @@ import sys
 from xNN import xNN
 
 def get_tags(s):
-    return [float(x) for x in s[1:-2].split(',')]
+    return [float(x) for x in s.split(',')]
 
 def to_tuple(line):
     arr = [float(x) for x in line.split(',')]
@@ -16,12 +16,10 @@ def get_data(datafile):
     tags = []
     for line in data_lines:
         if line[0] == '@':
-            words = line.split(' ')
-            try:
-                if words[1] == 'Class':
-                    tags = get_tags(words[2])
-            except:
-                pass
+            if '{' in line:
+                begin = line.find('{')+1
+                end = line.find('}')
+                tags = get_tags(line[begin:end])
         else:
             data.append(to_tuple(line))
     return data, tags
@@ -29,8 +27,6 @@ def get_data(datafile):
 def main(num_neighbours, datafile):
     with open(datafile, 'r') as ifile:
         data, tags = get_data(ifile)
-#    print(f'tags: {tags}')
-
     # split data into training set (70%)
     # and testing set (30%)
     delimiter = len(data)*7//10
