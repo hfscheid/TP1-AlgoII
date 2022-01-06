@@ -2,9 +2,9 @@ import heapq
 import kdtree
 
 class xNN:
-    def __init__(self, x, tags, train_set, test_set):
+    def __init__(self, tags, train_set, test_set):
         dimensions = len(train_set[0])-1
-        self.x = int(x)
+#        self.x = int(x)
         self.tags = tags
         self.tree = kdtree.KDtree(dimensions, train_set)
         self.test_set = test_set
@@ -19,7 +19,7 @@ class xNN:
         for k in self.guesses:
             self.guesses[k] = 0
 
-    def nearest_neighbours(self, point):
+    def nearest_neighbours(self, x, point):
         self.reference = point
         neighbours = []
 
@@ -39,7 +39,7 @@ class xNN:
             neighbours = self.tree.leaves(parent)
             neighbours, counter = self.distances(neighbours, counter)
 #            print(f'neighbours: {neighbours}')
-            neighbours = heapq.nsmallest(self.x, neighbours)
+            neighbours = heapq.nsmallest(x, neighbours)
             heapq.heapify(neighbours)
 
             # update the neighbouring radius,
@@ -90,41 +90,63 @@ class xNN:
         return list(neighbour_tags.keys())[0]
 
     def __stats(self, point, result):
-        true_tag = point[-1]
+        true_tag = str(point[-1])
         self.occurences[true_tag] += 1
         self.guesses[result] += 1
         if true_tag == result:
             self.hits[true_tag] += 1
             self.total_hits += 1
 
-    def classify(self, outfile):
+    def classify(self,x, outfile):
         for point in self.test_set:
-            result = self.nearest_neighbours(point)
+            result = self.nearest_neighbours(x, point)
             self.__stats(point, result)
             outfile.write(str(point)+'\t\t'+str(result)+'\n')
+
+        result = dict()
         
         # acuracia
-        outfile.write('Accuracy:\n')
-        outfile.write(f'{self.total_hits} hits.\n'\
-                      f'{self.total_hits/len(self.test_set)*100}% accuracy.\n')
-        outfile.write('\n\n')
+        result['accuracy'] = self.total_hits/len(self.test_set)*100
+#        outfile.write('Accuracy:\n')
+#        outfile.write(f'{self.total_hits} hits.\n'\
+#                      f'{self.total_hits/len(self.test_set)*100}% accuracy.\n')
+#        outfile.write('\n\n')
 
         # precisao (considerando classe relevante = 1)
-        outfile.write('Precision:\n')
+        precision = dict()
+        stats = dict()
         for tag in self.tags:
-            outfile.write(f'Tag: {tag}\n'\
-                          f'hits:\t\t\t{self.hits[tag]}\n'\
-                          f'total guesses:\t\t{self.guesses[tag]}\n'
-                          f'precision:\t\t{self.hits[tag]/self.guesses[tag]*100}%\n')
-            outfile.write('\n')
-        outfile.write('\n')
+            precision[tag] = self.hits[tag]/self.guesses[tag]*100
+            stats['hits'] = self.hits[tag]
+            stats['guesses'] = self.guesses[tag]
+            precision['stats'] = stats
+        result['precision'] = precision
+#       outfile.write('Precision:\n')
+#        for tag in self.tags:
+#            outfile.write(f'Tag: {tag}\n'\
+#                          f'hits:\t\t\t{self.hits[tag]}\n'\
+#                          f'total guesses:\t\t{self.guesses[tag]}\n'
+#                          f'precision:\t\t{self.hits[tag]/self.guesses[tag]*100}%\n')
+#            outfile.write('\n')
+#        outfile.write('\n')
 
         # revocacao
-        outfile.write('Recall:\n')
+        recall = dict()
+        stats = dict()
         for tag in self.tags:
-            outfile.write(f'Tag: {tag}\n'\
-                          f'hits:\t\t\t{self.hits[tag]}\n'\
-                          f'total occurences:\t{self.occurences[tag]}\n'
-                          f'recall:\t\t\t{self.hits[tag]/self.occurences[tag]*100}%\n')
-            outfile.write('\n')
-        outfile.write('\n')
+            recall[tag] = self.hits[tag]/self.occurences[tag]*100
+            stats['hits'] = self.hits[tag]
+            stats['occurences'] = self.occurences[tag]
+            recall['stats'] = stats
+        result['recall'] = recall
+
+#        outfile.write('Recall:\n')
+#        for tag in self.tags:
+#            outfile.write(f'Tag: {tag}\n'\
+#                          f'hits:\t\t\t{self.hits[tag]}\n'\
+#                          f'total occurences:\t{self.occurences[tag]}\n'
+#                          f'recall:\t\t\t{self.hits[tag]/self.occurences[tag]*100}%\n')
+#
+#            outfile.write('\n')
+#        outfile.write('\n')
+        return result

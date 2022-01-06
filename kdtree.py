@@ -30,7 +30,7 @@ class Node(BaseNode):
 
 class Leaf(BaseNode):
     def __init__(self, parent, data_tuple):
-        super().__init__(parent, data_tuple[-1])
+        super().__init__(parent, str(data_tuple[-1]))
         self.coordinates = data_tuple[:-1]
 
     def type(self):
