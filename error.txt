@@ -1,42 +1,131 @@
+
 data/appendicitis.dat
+Traceback (most recent call last):
+  File "./run_xnn.py", line 56, in <module>
+    main(sys.argv[1:-1], sys.argv[-1])
+  File "./run_xnn.py", line 45, in main
+    results.append(xnn.classify(int(num_neighbours[i]), outfile))
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 116, in classify
+    result = self.nearest_neighbours(x, point)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 69, in nearest_neighbours
+    return self.majority_tag(neighbours)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 94, in majority_tag
+    neighbour_tags[n[2].value] += 1
+KeyError: 0.0
 data/australian.dat
+Traceback (most recent call last):
+  File "./run_xnn.py", line 56, in <module>
+    main(sys.argv[1:-1], sys.argv[-1])
+  File "./run_xnn.py", line 45, in main
+    results.append(xnn.classify(int(num_neighbours[i]), outfile))
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 116, in classify
+    result = self.nearest_neighbours(x, point)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 69, in nearest_neighbours
+    return self.majority_tag(neighbours)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 94, in majority_tag
+    neighbour_tags[n[2].value] += 1
+KeyError: 0.0
 data/banana.dat
+Traceback (most recent call last):
+  File "./run_xnn.py", line 56, in <module>
+    main(sys.argv[1:-1], sys.argv[-1])
+  File "./run_xnn.py", line 45, in main
+    results.append(xnn.classify(int(num_neighbours[i]), outfile))
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 116, in classify
+    result = self.nearest_neighbours(x, point)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 69, in nearest_neighbours
+    return self.majority_tag(neighbours)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 94, in majority_tag
+    neighbour_tags[n[2].value] += 1
+KeyError: -1.0
 data/heart.dat
+Traceback (most recent call last):
+  File "./run_xnn.py", line 56, in <module>
+    main(sys.argv[1:-1], sys.argv[-1])
+  File "./run_xnn.py", line 45, in main
+    results.append(xnn.classify(int(num_neighbours[i]), outfile))
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 116, in classify
+    result = self.nearest_neighbours(x, point)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 69, in nearest_neighbours
+    return self.majority_tag(neighbours)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 94, in majority_tag
+    neighbour_tags[n[2].value] += 1
+KeyError: 2.0
 data/monk-2.dat
+Traceback (most recent call last):
+  File "./run_xnn.py", line 56, in <module>
+    main(sys.argv[1:-1], sys.argv[-1])
+  File "./run_xnn.py", line 45, in main
+    results.append(xnn.classify(int(num_neighbours[i]), outfile))
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 116, in classify
+    result = self.nearest_neighbours(x, point)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 69, in nearest_neighbours
+    return self.majority_tag(neighbours)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 94, in majority_tag
+    neighbour_tags[n[2].value] += 1
+KeyError: 1.0
 data/phoneme.dat
+Traceback (most recent call last):
+  File "./run_xnn.py", line 56, in <module>
+    main(sys.argv[1:-1], sys.argv[-1])
+  File "./run_xnn.py", line 45, in main
+    results.append(xnn.classify(int(num_neighbours[i]), outfile))
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 116, in classify
+    result = self.nearest_neighbours(x, point)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 69, in nearest_neighbours
+    return self.majority_tag(neighbours)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 94, in majority_tag
+    neighbour_tags[n[2].value] += 1
+KeyError: 0.0
 data/ring.dat
+Traceback (most recent call last):
+  File "./run_xnn.py", line 56, in <module>
+    main(sys.argv[1:-1], sys.argv[-1])
+  File "./run_xnn.py", line 45, in main
+    results.append(xnn.classify(int(num_neighbours[i]), outfile))
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 116, in classify
+    result = self.nearest_neighbours(x, point)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 69, in nearest_neighbours
+    return self.majority_tag(neighbours)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 94, in majority_tag
+    neighbour_tags[n[2].value] += 1
+KeyError: 1.0
 data/saheart.dat
 Traceback (most recent call last):
-  File "./read_data.py", line 44, in <module>
-    main(sys.argv[1], sys.argv[2])
-  File "./read_data.py", line 29, in main
+  File "./run_xnn.py", line 56, in <module>
+    main(sys.argv[1:-1], sys.argv[-1])
+  File "./run_xnn.py", line 32, in main
     data, tags = get_data(ifile)
-  File "./read_data.py", line 22, in get_data
-    tags = get_tags(line[begin:end])
-  File "./read_data.py", line 7, in get_tags
-    return [float(x) for x in s.split(',')]
-  File "./read_data.py", line 7, in <listcomp>
-    return [float(x) for x in s.split(',')]
+  File "./run_xnn.py", line 27, in get_data
+    data.append(to_tuple(line))
+  File "./run_xnn.py", line 13, in to_tuple
+    arr = [float(x) for x in line.split(',')]
+  File "./run_xnn.py", line 13, in <listcomp>
+    arr = [float(x) for x in line.split(',')]
 ValueError: could not convert string to float: 'Present'
 data/titanic.dat
+Traceback (most recent call last):
+  File "./run_xnn.py", line 56, in <module>
+    main(sys.argv[1:-1], sys.argv[-1])
+  File "./run_xnn.py", line 45, in main
+    results.append(xnn.classify(int(num_neighbours[i]), outfile))
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 116, in classify
+    result = self.nearest_neighbours(x, point)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 69, in nearest_neighbours
+    return self.majority_tag(neighbours)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 94, in majority_tag
+    neighbour_tags[n[2].value] += 1
+KeyError: -1.0
 data/twonorm.dat
-data/appendicitis.dat
-./runall.sh: line 5: ./read_data.py: No such file or directory
-data/australian.dat
-./runall.sh: line 5: ./read_data.py: No such file or directory
-data/banana.dat
-./runall.sh: line 5: ./read_data.py: No such file or directory
-data/heart.dat
-./runall.sh: line 5: ./read_data.py: No such file or directory
-data/monk-2.dat
-./runall.sh: line 5: ./read_data.py: No such file or directory
-data/phoneme.dat
-./runall.sh: line 5: ./read_data.py: No such file or directory
-data/ring.dat
-./runall.sh: line 5: ./read_data.py: No such file or directory
-data/saheart.dat
-./runall.sh: line 5: ./read_data.py: No such file or directory
-data/titanic.dat
-./runall.sh: line 5: ./read_data.py: No such file or directory
-data/twonorm.dat
-./runall.sh: line 5: ./read_data.py: No such file or directory
+Traceback (most recent call last):
+  File "./run_xnn.py", line 56, in <module>
+    main(sys.argv[1:-1], sys.argv[-1])
+  File "./run_xnn.py", line 45, in main
+    results.append(xnn.classify(int(num_neighbours[i]), outfile))
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 116, in classify
+    result = self.nearest_neighbours(x, point)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 69, in nearest_neighbours
+    return self.majority_tag(neighbours)
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 94, in majority_tag
+    neighbour_tags[n[2].value] += 1
+KeyError: 1.0

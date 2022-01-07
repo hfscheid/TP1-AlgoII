@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import sys
+import json
+
 from xNN import xNN
 
 def get_tags(s):
@@ -44,8 +46,11 @@ def main(num_neighbours, datafile):
             outfile.close()
 
     with open(f'{outfile_name}_stats.json', 'w') as statsfile:
-        for result in results:
-            statsfile.write(str(result))
+        json.dump(results, statsfile)
+#        for result in results:
+#            json.dump(result, statsfile)
+#            statsfile.write(str(result))
+#            statsfile.write('\n')
 
 
 main(sys.argv[1:-1], sys.argv[-1])

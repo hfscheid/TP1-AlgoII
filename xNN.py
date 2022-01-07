@@ -8,16 +8,29 @@ class xNN:
         self.tags = tags
         self.tree = kdtree.KDtree(dimensions, train_set)
         self.test_set = test_set
+#        self.total_hits = 0
+#        self.hits = dict.fromkeys(tags)
+#        for k in self.hits:
+#            self.hits[k] = 0
+#        self.occurences = dict.fromkeys(tags)
+#        for k in self.occurences:
+#            self.occurences[k] = 0
+#        self.guesses = dict.fromkeys(tags)
+#        for k in self.guesses:
+#            self.guesses[k] = 0
+
+    def set_stats(self):
         self.total_hits = 0
-        self.hits = dict.fromkeys(tags)
+        self.hits = dict.fromkeys(self.tags)
         for k in self.hits:
             self.hits[k] = 0
-        self.occurences = dict.fromkeys(tags)
+        self.occurences = dict.fromkeys(self.tags)
         for k in self.occurences:
             self.occurences[k] = 0
-        self.guesses = dict.fromkeys(tags)
+        self.guesses = dict.fromkeys(self.tags)
         for k in self.guesses:
             self.guesses[k] = 0
+
 
     def nearest_neighbours(self, x, point):
         self.reference = point
@@ -75,6 +88,7 @@ class xNN:
 
     def majority_tag(self, neighbours):
         neighbour_tags = dict.fromkeys(self.tags)
+        print(f'neighbour tags: {neighbour_tags')
         for tag in self.tags:
             neighbour_tags[tag] = 0
         for n in neighbours:
@@ -98,6 +112,7 @@ class xNN:
             self.total_hits += 1
 
     def classify(self,x, outfile):
+        self.set_stats()
         for point in self.test_set:
             result = self.nearest_neighbours(x, point)
             self.__stats(point, result)
@@ -107,10 +122,6 @@ class xNN:
         
         # acuracia
         result['accuracy'] = self.total_hits/len(self.test_set)*100
-#        outfile.write('Accuracy:\n')
-#        outfile.write(f'{self.total_hits} hits.\n'\
-#                      f'{self.total_hits/len(self.test_set)*100}% accuracy.\n')
-#        outfile.write('\n\n')
 
         # precisao (considerando classe relevante = 1)
         precision = dict()
@@ -121,14 +132,6 @@ class xNN:
             stats['guesses'] = self.guesses[tag]
             precision['stats'] = stats
         result['precision'] = precision
-#       outfile.write('Precision:\n')
-#        for tag in self.tags:
-#            outfile.write(f'Tag: {tag}\n'\
-#                          f'hits:\t\t\t{self.hits[tag]}\n'\
-#                          f'total guesses:\t\t{self.guesses[tag]}\n'
-#                          f'precision:\t\t{self.hits[tag]/self.guesses[tag]*100}%\n')
-#            outfile.write('\n')
-#        outfile.write('\n')
 
         # revocacao
         recall = dict()
@@ -140,13 +143,4 @@ class xNN:
             recall['stats'] = stats
         result['recall'] = recall
 
-#        outfile.write('Recall:\n')
-#        for tag in self.tags:
-#            outfile.write(f'Tag: {tag}\n'\
-#                          f'hits:\t\t\t{self.hits[tag]}\n'\
-#                          f'total occurences:\t{self.occurences[tag]}\n'
-#                          f'recall:\t\t\t{self.hits[tag]/self.occurences[tag]*100}%\n')
-#
-#            outfile.write('\n')
-#        outfile.write('\n')
         return result
