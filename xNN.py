@@ -125,22 +125,25 @@ class xNN:
 
         # precisao (considerando classe relevante = 1)
         precision = dict()
-        stats = dict()
         for tag in self.tags:
-            precision[tag] = self.hits[tag]/self.guesses[tag]*100
+            stats = dict()
+            stats['precision'] = (self.hits[tag]/self.guesses[tag]*100
+                                  if self.guesses[tag] > 0 else -1)
+#            precision[tag] = self.hits[tag]/self.guesses[tag]*100
             stats['hits'] = self.hits[tag]
             stats['guesses'] = self.guesses[tag]
-            precision['stats'] = stats
+            precision[tag] = stats
         result['precision'] = precision
 
         # revocacao
         recall = dict()
-        stats = dict()
         for tag in self.tags:
-            recall[tag] = self.hits[tag]/self.occurences[tag]*100
+            stats = dict()
+            stats['recall'] = self.hits[tag]/self.occurences[tag]*100
+#            recall[tag] = self.hits[tag]/self.occurences[tag]*100
             stats['hits'] = self.hits[tag]
             stats['occurences'] = self.occurences[tag]
-            recall['stats'] = stats
+            recall[tag] = stats
         result['recall'] = recall
 
         return result

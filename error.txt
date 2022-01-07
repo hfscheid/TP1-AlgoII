@@ -5,19 +5,23 @@ data/hayes-roth.dat
 Traceback (most recent call last):
   File "./run_xnn.py", line 61, in <module>
     main(sys.argv[1:-1], sys.argv[-1])
-  File "./run_xnn.py", line 37, in main
-    data, tags = get_data(ifile)
-  File "./run_xnn.py", line 32, in get_data
-    data.append(to_tuple(line))
-  File "./run_xnn.py", line 19, in to_tuple
-    return tuple([float(x) for x in line.split(',')])
-  File "./run_xnn.py", line 19, in <listcomp>
-    return tuple([float(x) for x in line.split(',')])
-ValueError: could not convert string to float: 
+  File "./run_xnn.py", line 50, in main
+    results.append(xnn.classify(int(num_neighbours[i]), outfile))
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 130, in classify
+    stats['precision'] = self.hits[tag]/self.guesses[tag]*100
+ZeroDivisionError: division by zero
 data/heart.dat
 data/monk-2.dat
 data/phoneme.dat
 data/ring.dat
 data/tae.dat
+Traceback (most recent call last):
+  File "./run_xnn.py", line 61, in <module>
+    main(sys.argv[1:-1], sys.argv[-1])
+  File "./run_xnn.py", line 50, in main
+    results.append(xnn.classify(int(num_neighbours[i]), outfile))
+  File "/home/hfscheid/Desktop/Semestre/Algo/TP1/xNN.py", line 130, in classify
+    stats['precision'] = self.hits[tag]/self.guesses[tag]*100
+ZeroDivisionError: division by zero
 data/titanic.dat
 data/twonorm.dat
