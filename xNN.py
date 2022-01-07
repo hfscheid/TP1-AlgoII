@@ -88,7 +88,7 @@ class xNN:
 
     def majority_tag(self, neighbours):
         neighbour_tags = dict.fromkeys(self.tags)
-        print(f'neighbour tags: {neighbour_tags}')
+#        print(f'neighbour tags: {neighbour_tags}')
         for tag in self.tags:
             neighbour_tags[tag] = 0
         for n in neighbours:
@@ -104,7 +104,7 @@ class xNN:
         return list(neighbour_tags.keys())[0]
 
     def __stats(self, point, result):
-        true_tag = str(point[-1])
+        true_tag = point[-1]
         self.occurences[true_tag] += 1
         self.guesses[result] += 1
         if true_tag == result:
