@@ -10,7 +10,12 @@ def get_tags(s):
     return [x for x in s.split(',')]
 
 def to_tuple(line):
-    arr = [float(x) for x in line.split(',')]
+    values = line.split(',')
+    arr = [float(x) for x in values[:-1]]
+    tag = values[-1].strip()
+    if tag[0] == ' ':
+        tag = tag[1:]
+    arr.append(values[-1].strip())
     return tuple(arr)
 
 def get_data(datafile):
@@ -33,6 +38,7 @@ def main(num_neighbours, datafile):
     # split data into training set (70%)
     # and testing set (30%)
     delimiter = len(data)*7//10
+    print(f'found tags: {tags}')
     xnn = xNN(tags,
               data[:delimiter],
               data[delimiter:])

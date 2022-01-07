@@ -88,7 +88,7 @@ class xNN:
 
     def majority_tag(self, neighbours):
         neighbour_tags = dict.fromkeys(self.tags)
-        print(f'neighbour tags: {neighbour_tags')
+        print(f'neighbour tags: {neighbour_tags}')
         for tag in self.tags:
             neighbour_tags[tag] = 0
         for n in neighbours:
